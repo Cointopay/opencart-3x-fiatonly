@@ -1,3 +1,5 @@
+#FIAT ONLY EDITION - PLEASE REFER TO THE OTHER PLUGIN FOR CRYPTO#
+
 # COINTOPAY PAYMENT METHOD FOR OPENCART 3.0.X
 
 SOURCE CODE FOR COINTOPAY OPENCART PLUGIN LOCATED HERE: https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=37980&filter_download_id=36&sort=date_added
