@@ -1,0 +1,142 @@
+{{ header }}
+<div class="container">
+    <div id="content">
+        <fieldset
+                style="border: 1px solid silver; margin: 0 2px; padding: 0.35em 0.625em 0.75em;float: left; width: 100%; margin-bottom: 60px; padding-bottom: 30px;">
+            {% if (error is defined) %}
+                <div class="warning">{{ error }}</div>
+            {% else %}
+                <legend style="width: auto;"><h2 style="font-weight: bold;">{{ text_title }}</h2></legend>
+                <div class="login-content">
+
+                    <div style="width: 50%; float:left;" class="left">
+
+                        <table class="form">
+                            <tbody>
+                            <tr style="height: 50px;">
+                                <td style="width: 200px;">{{ text_checkout_number }}</td>
+                                <td>{{ CustomerReferenceNr }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="form">
+                            <tbody>
+                            <tr style="height: 50px;">
+                                <td style="width: 200px;">{{ text_transaction_id }}</td>
+                                <td>{{ TransactionID }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="form">
+                            <tbody>
+                            <tr style="height: 50px;">
+                                <td style="width: 200px;">{{ text_amount }}</td>
+                                <td>{{ OriginalAmount~" " }}{{ inputCurrency }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="form">
+                            <tbody>
+                            <tr style="height: 50px;">
+                                <td style="width: 200px;">{{ text_expiry }}</td>
+                                <td><span id="expire_time">{{ CalExpiryTime }}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="form">
+                            <tbody>
+                            <tr>
+                                <td colspan="2" style="font-weight: bold">{{ text_fiat_payment_detail }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="form">
+                            <tbody>
+                            <tr>
+                                <td colspan="2" style="padding-bottom: 8px">{{ PaymentDetail }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="form">
+                            <tbody>
+                            <tr>
+                                <td style="width: 200px;">{{ text_pay_with_other }}</td>
+                                <td><a href="{{ RedirectURL }}" style="" target="_blank">{{ text_clickhere }}</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+        </fieldset>
+    </div>
+    <form method="post" action="index.php?route=extension/payment/cointopay/callback" id="CoinsPaymentCallBack">
+        <input type="hidden" name="CustomerReferenceNr" value="{{ CustomerReferenceNr }}"/>
+        <input type="hidden" name="status" id="CoinsPaymentStatus" value=""/>
+    </form>
+    <script>
+    jQuery(function ($) {
+        // count down time left
+        var d1 = new Date(),
+            d2 = new Date(d1);
+        d2.setMinutes(d1.getMinutes() + {{ ExpiryTime }} );
+        var countDownDate = d2.getTime();
+
+        // Update the count down every 1 second
+        var x = setInterval(function () {
+            if ($('#expire_time').length) {
+                // Get todays date and time
+                var now = new Date().getTime();
+
+                // Find the distance between now an the count down date
+                var distance = countDownDate - now;
+
+                // Time calculations for days, hours, minutes and seconds
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Output the result in an element with id="expire_time"
+                document.getElementById("expire_time").innerHTML = days + "d " + hours + "h "
+                    + minutes + "m " + seconds + "s ";
+
+                // If the count down is over, write some text
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("expire_time").innerHTML = "EXPIRED";
+                }
+            }
+        }, 1000);
+    });
+    setInterval(function () {
+        var CustomerReferenceNr = {{ CustomerReferenceNr }};
+        var TransactionID = {{ TransactionID }};
+        $.ajax({
+            url: '{{ "index.php?route=extension/payment/cointopay/getCoinsPaymentUrl" }}',
+            showLoader: true,
+            data: {TransactionID: TransactionID},
+            type: "POST",
+            success: function (result) {
+                var cointopay_response = JSON.parse(result);
+                if (cointopay_response[1] == 'paid') {
+                    $("#CoinsPaymentStatus").val(cointopay_response[1]);
+                    $("#CoinsPaymentCallBack").submit();
+
+                } else if (cointopay_response[1] == 'failed') {
+                    $("#CoinsPaymentStatus").val(cointopay_response[1]);
+                    $("#CoinsPaymentCallBack").submit();
+                } else if (cointopay_response[1] == 'expired') {
+                    $("#CoinsPaymentStatus").val(cointopay_response[1]);
+                    $("#CoinsPaymentCallBack").submit();
+                }
+
+            }
+        });
+
+    }, 5000);
+
+    </script>
+</div>
+{{ footer }}
