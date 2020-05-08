@@ -1,8 +1,7 @@
 {{ header }}
 <div class="container">
     <div id="content">
-        <fieldset
-                style="border: 1px solid silver; margin: 0 2px; padding: 0.35em 0.625em 0.75em;float: left; width: 100%; margin-bottom: 60px; padding-bottom: 30px;">
+        <fieldset style="border: 1px solid silver; margin: 0 2px; padding: 0.35em 0.625em 0.75em;float: left; width: 100%; margin-bottom: 60px; padding-bottom: 30px;">
             {% if (error is defined) %}
                 <div class="warning">{{ error }}</div>
             {% else %}
@@ -71,7 +70,7 @@
             {% endif %}
         </fieldset>
     </div>
-    <form method="post" action="index.php?route=extension/payment/cointopay/callback" id="CoinsPaymentCallBack">
+    <form method="post" action="index.php?route=extension/payment/cointopay_fiat/callback" id="CoinsPaymentCallBack">
         <input type="hidden" name="CustomerReferenceNr" value="{{ CustomerReferenceNr }}"/>
         <input type="hidden" name="status" id="CoinsPaymentStatus" value=""/>
     </form>
@@ -114,7 +113,7 @@
         var CustomerReferenceNr = {{ CustomerReferenceNr }};
         var TransactionID = {{ TransactionID }};
         $.ajax({
-            url: '{{ "index.php?route=extension/payment/cointopay/getCoinsPaymentUrl" }}',
+            url: '{{ "index.php?route=extension/payment/cointopay_fiat/getCoinsPaymentUrl" }}',
             showLoader: true,
             data: {TransactionID: TransactionID},
             type: "POST",

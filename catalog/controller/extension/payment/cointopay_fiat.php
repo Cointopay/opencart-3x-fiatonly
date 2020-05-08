@@ -144,7 +144,7 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
 
     function getInputCurrencyList()
     {
-        $merchantId = $this->config->get('payment_cointopay_merchantID');
+        $merchantId = $this->config->get('payment_cointopay_fiat_merchantID');
         $url = 'https://cointopay.com/v2REAPI?MerchantID=' . $merchantId . '&Call=inputCurrencyList&output=json&APIKey=_';
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -174,8 +174,6 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
         $merchantid = $this->config->get('payment_cointopay_fiat_merchantID');
         $payment_cointopay_securitycode = $this->config->get('payment_cointopay_fiat_securitycode');
         $response = $this->c2pCurl('SecurityCode=' . $payment_cointopay_securitycode . '&MerchantID=' . $merchantid . '&Amount=' . $data['price'] . '&AltCoinID=' . $data['AltCoinID'] . '&inputCurrency=' . $data['currency'] . '&output=json&CustomerReferenceNr=' . $data['OrderID'] . '&returnurl=' . $this->url->link('extension/payment/cointopay_fiat/callback') . '&transactionconfirmurl=' . $this->url->link('extension/payment/cointopay_fiat/callback') . '&transactionfailurl=' . $this->url->link('extension/payment/cointopay_fiat/callback'), $data['key']);
-
-        // $response = $this->c2pCurl('key='.$data['key'].'&price='.$data['price'].'&AltCoinID='.$data['AltCoinID'].'&OrderID='.$data['OrderID'].'&inputCurrency='.$data['currency'].'&transactionconfirmurl='.$this->url->link('extension/payment/cointopay/callback').'&output=json&transactionfailurl='.$this->url->link('extension/payment/cointopay/callback'), $data['key']);
         return $response;
     }
 
@@ -229,11 +227,6 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
     {
         $url = 'https://app.cointopay.com/CloneMasterTransaction?MerchantID=' . $merchantId . '&output=json';
         $ch = curl_init($url);
-        //print_r($ch);
-        /*curl_setopt($ch, CURLOPT_RETURNTRANSFER, 3);
-        $output = curl_exec($ch);
-        curl_close($ch);*/
-
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -317,11 +310,6 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
                             $this->response->setOutput($this->load->view('extension/payment/cointopay_fiat_success', $data));
                         }
                     }
-                    /*elseif($_GET['status'] == 'paid' AND  $_GET['notenough'] == '1')
-                    {
-                        $statusProcessed = 15;
-                      */  //$this->model_checkout_order->addOrderHistory($_GET['CustomerReferenceNr'], $statusProcessed,'Low Balanace');
-                    // }
                     elseif ($_REQUEST['status'] == 'failed') {
                         $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], $this->config->get('payment_cointopay_fiat_callback_failed_order_status_id', 'Transaction payment failed'));
 
@@ -329,10 +317,10 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
                         $data['footer'] = $this->load->controller('common/footer');
                         $data['header'] = $this->load->controller('common/header');
 
-                        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/extension/payment/cointopay_fait_failed')) {
+                        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/extension/payment/cointopay_fiat_failed')) {
                             $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/extension/payment/cointopay_fiat_failed', $data));
                         } else {
-                            $this->response->setOutput($this->load->view('extension/payment/cointopay_fait_failed', $data));
+                            $this->response->setOutput($this->load->view('extension/payment/cointopay_fiat_failed', $data));
                         }
                     } elseif ($_REQUEST['status'] == 'expired') {
                         $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], $this->config->get('payment_cointopay_fiat_callback_failed_order_status_id', 'Transaction payment failed'));
@@ -344,7 +332,7 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
                         if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/extension/payment/cointopay_fiat_failed')) {
                             $this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/extension/payment/cointopay_fiat_failed', $data));
                         } else {
-                            $this->response->setOutput($this->load->view('extension/payment/cointopay_fait_failed', $data));
+                            $this->response->setOutput($this->load->view('extension/payment/cointopay_fiat_failed', $data));
                         }
                     }
                 }

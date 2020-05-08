@@ -33,7 +33,7 @@
                     type: 'post',
                     data: {merchantId: merchantId},
                     success: function (res) {
-                        $('#cointopay_crypto_coin').html(res);
+                        $('#cointopay_fiat_crypto_coin').html(res);
                     }
                 });
             }
@@ -80,12 +80,12 @@
                         </div>
                     </div>
                     <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="entry-crypto-coin"><span data-toggle="tooltip"
+                        <label class="col-sm-2 control-label" for="cointopay_fiat_crypto_coin"><span data-toggle="tooltip"
                                                                                             title="{{ help_crypto_coin_hint }}">{{ entry_crypto_coin }}</span></label>
                         <div class="col-sm-10">
-                            <select name="payment_cointopay_fiat_crypto_coin" id="cointopay_crypto_coin"
+                            <select name="payment_cointopay_fiat_crypto_coin" id="cointopay_fiat_crypto_coin"
                                     class="form-control">
-                                {% if cointopay_fiat_crypto_coin  and  cointopay_fiat_crypto_coin %}
+                                {% if cointopay_fiat_crypto_coin %}
                                     <option value="">Select Default Coin</option>
                                     {% for key, value in crypto_coins %}
                                         <option value="{{ key }}" {% if key  ==  cointopay_fiat_crypto_coin %}{{ 'selected="selected"' }}{% endif %}>{{ value }}</option>
@@ -101,9 +101,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-order-status">{{ entry_order_status }}</label>
+                        <label class="col-sm-2 control-label" for="payment_cointopay_fiat_order_status_id">{{ entry_order_status }}</label>
                         <div class="col-sm-10">
-                            <select name="payment_cointopay_fiat_order_status_id" id="cointopay_order_status_id"
+                            <select name="payment_cointopay_fiat_order_status_id" id="payment_cointopay_fiat_order_status_id"
                                     class="form-control">
                                 {% for order_status in order_statuses %}
                                     {% if order_status.order_status_id  ==  cointopay_fiat_order_status_id %}
@@ -156,7 +156,7 @@
                         <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
                         <div class="col-sm-10">
                             <select name="payment_cointopay_fiat_status" id="input-status" class="form-control">
-                                {% if cointopay_status %}
+                                {% if cointopay_fiat_status %}
                                     <option value="1" selected="selected">{{ text_enabled }}</option>
                                     <option value="0">{{ text_disabled }}</option>
                                 {% else %}
