@@ -5,7 +5,7 @@
             {% if (error is defined) %}
                 <div class="warning">{{ error }}</div>
             {% else %}
-                <legend style="width: auto;"><h2 style="font-weight: bold;">{{ text_title }}</h2></legend>
+                 <legend style="width: auto;margin-left: -7.5px;padding: 0 7px;border-bottom:none;"><h2 style="font-weight: bold;margin-top: 6px;">{{ text_title }}</h2></legend>
                 <div class="login-content">
 
                     <div style="width: 50%; float:left;" class="left">
@@ -39,13 +39,6 @@
                             <tr style="height: 50px;">
                                 <td style="width: 200px;">{{ text_expiry }}</td>
                                 <td><span id="expire_time">{{ CalExpiryTime }}</span></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table class="form">
-                            <tbody>
-                            <tr>
-                                <td colspan="2" style="font-weight: bold">{{ text_fiat_payment_detail }}</td>
                             </tr>
                             </tbody>
                         </table>

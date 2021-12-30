@@ -8,7 +8,7 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
 
         $this->load->model('checkout/order');
 
-        $order_info = "Session order_id is empty cannot proceed with your request";
+        $order_info = "Session empty, please redo your order to proceed.";
 
         if (isset($this->session->data['order_id'])) {
             $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
@@ -159,7 +159,7 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
 
         if (!empty($php_arr)) {
             foreach ($php_arr as $c) {
-                if (array_key_exists('ShortName', $c)) {
+                if (property_exists($c, 'ShortName')) {
                     $new_php_arr['currency'][] = $c->ShortName;
                 }
 

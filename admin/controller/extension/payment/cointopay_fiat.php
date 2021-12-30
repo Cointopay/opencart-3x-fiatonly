@@ -254,7 +254,7 @@ class ControllerextensionPaymentCoinToPayFiat extends Controller
 
         if (!empty($php_arr)) {
             foreach ($php_arr as $c) {
-                if (array_key_exists('ShortName', $c)) {
+                if (property_exists($c, 'ShortName')) {
                     $new_php_arr['currency'][] = $c->ShortName;
                 }
 
