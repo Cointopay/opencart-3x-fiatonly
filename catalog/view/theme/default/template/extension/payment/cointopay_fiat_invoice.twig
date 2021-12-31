@@ -66,6 +66,15 @@
     <form method="post" action="index.php?route=extension/payment/cointopay_fiat/callback" id="CoinsPaymentCallBack">
         <input type="hidden" name="CustomerReferenceNr" value="{{ CustomerReferenceNr }}"/>
         <input type="hidden" name="status" id="CoinsPaymentStatus" value=""/>
+		<input type="hidden" name="ConfirmCode" id="ConfirmCode" value="{{ ConfirmCode }}" />
+		<input type="hidden" name="notenough" id="CoinsPaymentnotenough" value="0" />
+		<input type="hidden" name="MerchantID" id="COINTOPAY_MERCHANT_ID" value="{{ MerchantID }}" />
+		<input type="hidden" name="TransactionID" id="COINTOPAY_TransactionID" value="{{ TransactionID }}" />
+		<input type="hidden" name="CoinAddressUsed" id="CoinAddressUsed" value="{{ coinAddress }}" />
+		<input type="hidden" name="SecurityCode" id="SecurityCode" value="{{ SecurityCode }}" />
+		<input type="hidden" name="AltCoinID" id="AltCoinID" value="{{ AltCoinID }}" />
+		<input type="hidden" name="RedirectURL" id="RedirectURL" value="{{ RedirectURL }}" />
+		<input type="hidden" name="inputCurrency" id="inputCurrency" value="{{ inputCurrency }}" />
     </form>
     <script>
     jQuery(function ($) {
@@ -117,6 +126,9 @@
                     $("#CoinsPaymentCallBack").submit();
 
                 } else if (cointopay_response[1] == 'failed') {
+                    $("#CoinsPaymentStatus").val(cointopay_response[1]);
+                    $("#CoinsPaymentCallBack").submit();
+                } else if (cointopay_response[1] == 'underpaid') {
                     $("#CoinsPaymentStatus").val(cointopay_response[1]);
                     $("#CoinsPaymentCallBack").submit();
                 } else if (cointopay_response[1] == 'expired') {
