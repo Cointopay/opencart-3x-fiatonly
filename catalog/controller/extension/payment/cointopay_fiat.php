@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentCoinToPayFiat extends Controller
+class ControllerExtensionPaymentCointopayFiat extends Controller
 {
     public function index()
     {
@@ -87,7 +87,6 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
 					$data1['MerchantID'] = $php_arr->MerchantID;
 					$data1['SecurityCode'] = $php_arr->SecurityCode;
 					$data1['ConfirmCode'] = $php_arr->Security;
-					$data1['inputCurrency'] = $php_arr->inputCurrency;
                     $data1['CalExpiryTime'] = date("m/d/Y h:i:s T", strtotime($php_arr->ExpiryTime));
                     $data1['OrderID'] = $this->session->data['order_id'];
                     $data1['CustomerReferenceNr'] = $php_arr->CustomerReferenceNr;
@@ -189,19 +188,18 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
     {
         $merchantid = $this->config->get('payment_cointopay_fiat_merchantID');
         $payment_cointopay_securitycode = $this->config->get('payment_cointopay_fiat_securitycode');
-        $response = $this->c2pCurl('SecurityCode=' . $payment_cointopay_securitycode . '&MerchantID=' . $merchantid . '&Amount=' . $data['price'] . '&AltCoinID=' . $data['AltCoinID'] . '&inputCurrency=' . $data['currency'] . '&output=json&CustomerReferenceNr=' . $data['OrderID'] . '&returnurl=' . $this->url->link('extension/payment/cointopay_fiat/callback') . '&transactionconfirmurl=' . $this->url->link('extension/payment/cointopay_fiat/callback') . '&transactionfailurl=' . $this->url->link('extension/payment/cointopay_fiat/callback'), $data['key']);
-        return $response;
+        return $this->c2pCurl('SecurityCode=' . $payment_cointopay_securitycode . '&MerchantID=' . $merchantid . '&Amount=' . $data['price'] . '&AltCoinID=' . $data['AltCoinID'] . '&inputCurrency=' . $data['currency'] . '&output=json&CustomerReferenceNr=' . $data['OrderID'] . '&returnurl=' . $this->url->link('extension/payment/cointopay_fiat/callback') . '&transactionconfirmurl=' . $this->url->link('extension/payment/cointopay_fiat/callback') . '&transactionfailurl=' . $this->url->link('extension/payment/cointopay_fiat/callback'), $data['key']);
     }
 
     public function c2pCurl($data, $apiKey, $post = false)
     {
-        //$curl = curl_init($url);
+        // $curl = curl_init($url);
         $length = 0;
         if ($post) {
             $formData = $post;
             $formData['transactionconfirmurl'] = $this->url->link('extension/payment/cointopay_fiat/callback');
             $formData['transactionfailurl'] = $this->url->link('extension/payment/cointopay_fiat/callback');
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $formData);
+            // curl_setopt($curl, CURLOPT_POSTFIELDS, $formData);
             $length = strlen($post);
         }
 
@@ -444,7 +442,7 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
                         }
                     }
                     elseif ($_REQUEST['status'] == 'paid' && $_REQUEST['notenough'] == 1) {
-                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], 1,'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to pending (underpaid) for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
+                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], $this->config->get('payment_cointopay_fiat_callback_notenough_order_status_id'),'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to pending (underpaid) for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
 
                         $data['text_failed'] = $this->language->get('text_notenough').$_REQUEST['CustomerReferenceNr'];
                         $data['footer'] = $this->load->controller('common/footer');
@@ -469,7 +467,7 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
                         }
                     }
 					elseif ($_REQUEST['status'] == 'expired') {
-                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], 14,'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to expired for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
+                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], $this->config->get('payment_cointopay_fiat_callback_expired_order_status_id'),'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to expired for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
 
                         $data['text_failed'] = $this->language->get('text_expired');
                         $data['footer'] = $this->load->controller('common/footer');
@@ -481,7 +479,7 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
                             $this->response->setOutput($this->load->view('extension/payment/cointopay_fiat_failed', $data));
                         }
                     } elseif ($_REQUEST['status'] == 'underpaid') {
-                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], 1,'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to pending (underpaid) for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
+                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], $this->config->get('payment_cointopay_fiat_callback_notenough_order_status_id'),'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to pending (underpaid) for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
 
                         $data['text_failed'] = $this->language->get('text_notenough').$_REQUEST['CustomerReferenceNr'];
                         $data['footer'] = $this->load->controller('common/footer');
@@ -504,7 +502,7 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
                             $this->response->setOutput($this->load->view('extension/payment/cointopay_fiat_failed', $data));
                         }
                     } elseif ($_REQUEST['status'] == 'cancelled') {
-                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], 15,'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to '.$_REQUEST['status'].' for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
+                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], $this->config->get('payment_cointopay_fiat_callback_cancel_order_status_id'),'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to '.$_REQUEST['status'].' for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
 
                         $data['text_failed'] = $this->language->get('text_cancel');
                         $data['footer'] = $this->load->controller('common/footer');
@@ -516,7 +514,7 @@ class ControllerExtensionPaymentCoinToPayFiat extends Controller
                             $this->response->setOutput($this->load->view('extension/payment/cointopay_fiat_failed', $data));
                         }
                     } else {
-                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], 15,'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to canceled for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
+                        $this->model_checkout_order->addOrderHistory($_REQUEST['CustomerReferenceNr'], $this->config->get('payment_cointopay_fiat_callback_cancel_order_status_id'),'Cointopay Transaction #'.$_REQUEST['TransactionID'].' Set to canceled for OrderID #'.$_REQUEST['CustomerReferenceNr'], false);
 
                         $data['text_failed'] = $this->language->get('text_cancel');
                         $data['footer'] = $this->load->controller('common/footer');

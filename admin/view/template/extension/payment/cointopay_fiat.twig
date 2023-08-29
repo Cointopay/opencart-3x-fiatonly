@@ -21,31 +21,15 @@
         {% endif %}
         <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-cointopay"
               class="form-horizontal">
-            <script type="text/javascript">
-            {% if cointopay_merchantID is not empty  and  cointopay_crypto_coin is empty %}
-            $(document).ready(function () {
-                getMerchantCoin('{{ cointopay_merchantID }}');
-            });
-            {% endif %}
-            function getMerchantCoin(merchantId) {
-                $.ajax({
-                    url: 'index.php?route=extension/payment/cointopay_fiat/getMerchantCoinsByAjax&user_token={{ user_token }}',
-                    type: 'post',
-                    data: {merchantId: merchantId},
-                    success: function (res) {
-                        $('#cointopay_fiat_crypto_coin').html(res);
-                    }
-                });
-            }
-            </script>
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab-general">
                     <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="entry-display-name"><span data-toggle="tooltip"
-                                                                                             title="{{ help_display_name_hint }}">{{ entry_display_name }}</span></label>
+                        <label class="col-sm-2 control-label" for="entry-display-name">
+                            <span data-toggle="tooltip"
+                                  title="{{ help_display_name_hint }}">{{ entry_display_name }}</span></label>
                         <div class="col-sm-10">
                             <input type="text" name="payment_cointopay_fiat_display_name"
                                    value="{{ cointopay_fiat_display_name }}" placeholder="{{ entry_display_name }}"
@@ -56,11 +40,12 @@
                         </div>
                     </div>
                     <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="entry-securitycode"><span data-toggle="tooltip"
-                                                                                             title="{{ help_api_key_hint }}">{{ entry_securitycode }}</span></label>
+                        <label class="col-sm-2 control-label" for="entry-securitycode">
+                            <span data-toggle="tooltip"
+                                  title="{{ help_api_key_hint }}">{{ entry_securitycode }}</span></label>
                         <div class="col-sm-10">
                             <input type="text" name="payment_cointopay_fiat_securitycode"
-                                   value="{{cointopay_fiat_securitycode }}" placeholder="{{ entry_securitycode }}"
+                                   value="{{ cointopay_fiat_securitycode }}" placeholder="{{ entry_securitycode }}"
                                    id="cointopay_securitycode" class="form-control"/>
                             {% if error_api_key %}
                                 <div class="text-danger">{{ error_api_key }}</div>
@@ -68,10 +53,12 @@
                         </div>
                     </div>
                     <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="entry-merchantID"><span data-toggle="tooltip"
-                                                                                           title="{{ help_merchantID_hint }}">{{ entry_merchantID }}</span></label>
+                        <label class="col-sm-2 control-label" for="entry-merchantID">
+                            <span data-toggle="tooltip"
+                                  title="{{ help_merchantID_hint }}">{{ entry_merchantID }}</span></label>
                         <div class="col-sm-10">
-                            <input type="text" name="payment_cointopay_fiat_merchantID" value="{{ cointopay_fiat_merchantID }}"
+                            <input type="text" name="payment_cointopay_fiat_merchantID"
+                                   value="{{ cointopay_fiat_merchantID }}"
                                    placeholder="{{ entry_merchantID }}" id="cointopay_merchantID" class="form-control"
                                    onchange="getMerchantCoin(this.value);"/>
                             {% if error_merchantID %}
@@ -80,8 +67,9 @@
                         </div>
                     </div>
                     <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="cointopay_fiat_crypto_coin"><span data-toggle="tooltip"
-                                                                                            title="{{ help_crypto_coin_hint }}">{{ entry_crypto_coin }}</span></label>
+                        <label class="col-sm-2 control-label" for="cointopay_fiat_crypto_coin">
+                            <span data-toggle="tooltip"
+                                  title="{{ help_crypto_coin_hint }}">{{ entry_crypto_coin }}</span></label>
                         <div class="col-sm-10">
                             <select name="payment_cointopay_fiat_crypto_coin" id="cointopay_fiat_crypto_coin"
                                     class="form-control">
@@ -101,9 +89,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="payment_cointopay_fiat_order_status_id">{{ entry_order_status }}</label>
+                        <label class="col-sm-2 control-label"
+                               for="payment_cointopay_fiat_order_status_id">{{ entry_order_status }}</label>
                         <div class="col-sm-10">
-                            <select name="payment_cointopay_fiat_order_status_id" id="payment_cointopay_fiat_order_status_id"
+                            <select name="payment_cointopay_fiat_order_status_id"
+                                    id="payment_cointopay_fiat_order_status_id"
                                     class="form-control">
                                 {% for order_status in order_statuses %}
                                     {% if order_status.order_status_id  ==  cointopay_fiat_order_status_id %}
@@ -153,6 +143,57 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label"
+                               for="entry-callback-expired-order-status">{{ entry_callback_expired_order_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_cointopay_fiat_callback_expired_order_status_id"
+                                    id="cointopay_callback_fiat_expired_order_status_id" class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if order_status.order_status_id  ==  cointopay_fiat_callback_expired_order_status_id %}
+                                        <option value="{{ order_status.order_status_id }}"
+                                                selected="selected">{{ order_status.name }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                    {% endif %}{% endfor %}
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"
+                               for="entry-callback-notenough-order-status">{{ entry_callback_notenough_order_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_cointopay_fiat_callback_notenough_order_status_id"
+                                    id="cointopay_fiat_callback_notenough_order_status_id" class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if order_status.order_status_id  ==  cointopay_fiat_callback_notenough_order_status_id %}
+                                        <option value="{{ order_status.order_status_id }}"
+                                                selected="selected">{{ order_status.name }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                    {% endif %}{% endfor %}
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"
+                               for="entry-callback-cancel-order-status">{{ entry_callback_cancel_order_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_cointopay_fiat_callback_cancel_order_status_id"
+                                    id="cointopay_callback_fiat_cancel_order_status_id" class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if order_status.order_status_id  ==  cointopay_fiat_callback_cancel_order_status_id %}
+                                        <option value="{{ order_status.order_status_id }}"
+                                                selected="selected">{{ order_status.name }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                    {% endif %}{% endfor %}
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
                         <div class="col-sm-10">
                             <select name="payment_cointopay_fiat_status" id="input-status" class="form-control">
@@ -170,7 +211,7 @@
                         <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
                         <div class="col-sm-10">
                             <input type="text" name="payment_cointopay_fiat_sort_order"
-                                   value="{{ payment_cointopay_fiat_sort_order }}" placeholder="{{ entry_sort_order }}"
+                                   value="{{ cointopay_fiat_sort_order }}" placeholder="{{ entry_sort_order }}"
                                    id="input-sort-order" class="form-control"/>
                         </div>
                     </div>
@@ -179,4 +220,21 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    {% if cointopay_merchantID is not empty  and  cointopay_crypto_coin is empty %}
+    $(document).ready(function () {
+        getMerchantCoin('{{ cointopay_merchantID }}');
+    });
+    {% endif %}
+    function getMerchantCoin(merchantId) {
+        $.ajax({
+            url: 'index.php?route=extension/payment/cointopay_fiat/getMerchantCoinsByAjax&user_token={{ user_token }}',
+            type: 'post',
+            data: {merchantId: merchantId},
+            success: function (res) {
+                $('#cointopay_fiat_crypto_coin').html(res);
+            }
+        });
+    }
+</script>
 {{ footer }}

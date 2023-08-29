@@ -7,7 +7,7 @@ $_['text_payment'] = 'Payment';
 $_['text_success'] = 'Success: You have modified Cointopay account details!';
 $_['text_enabled'] = 'Enabled';
 $_['text_disabled'] = 'Disabled';
-
+$_['text_cointopay_fiat'] = '<a target="_BLANK" href="https://cointopay.com/"><img style="width: 100px;" src="view/image/payment/cointopay.png" alt="Cointopay Fiat" title="Cointopay Fiat" style="border: 1px solid #EEEEEE;" /></a>';
 
 // Entry
 $_['entry_securitycode'] = 'SecurityCode';
@@ -18,6 +18,9 @@ $_['entry_display_name'] = 'Display Name';
 $_['entry_order_status'] = 'Order Status After Create Invoice';
 $_['entry_callback_success_order_status'] = 'Order Status After Callback success From Cointopay';
 $_['entry_callback_failed_order_status'] = 'Order Status After Callback Failed From Cointopay';
+$_['entry_callback_expired_order_status'] = 'Order Status After Callback Expired From Cointopay';
+$_['entry_callback_notenough_order_status'] = 'Order Status After Callback Underpaid From Cointopay';
+$_['entry_callback_cancel_order_status'] = 'Order Status when Order Cancel';
 $_['entry_merchantID'] = 'Merchant ID';
 $_['entry_sort_order'] = 'Sort Order';
 

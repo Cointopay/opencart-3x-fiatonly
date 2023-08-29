@@ -1,6 +1,6 @@
 <?php
 
-class ModelExtensionPaymentCoinToPayFiat extends Model
+class ModelExtensionPaymentCointopayFiat extends Model
 {
     public function getMethod($address, $total)
     {

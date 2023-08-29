@@ -1,6 +1,6 @@
 <?php
 
-class ControllerextensionPaymentCoinToPayFiat extends Controller
+class ControllerExtensionPaymentCointopayFiat extends Controller
 {
     private $error = array();
 
@@ -158,15 +158,37 @@ class ControllerextensionPaymentCoinToPayFiat extends Controller
             $data['cointopay_fiat_callback_failed_order_status_id'] = $this->config->get('payment_cointopay_fiat_callback_failed_order_status_id');
         }
 
+        if (isset($this->request->post['payment_cointopay_fiat_callback_expired_order_status_id'])) {
+            $data['cointopay_fiat_callback_expired_order_status_id'] = $this->request->post['payment_cointopay_fiat_callback_expired_order_status_id'];
+        } else {
+            $data['cointopay_fiat_callback_expired_order_status_id'] = $this->config->get('payment_cointopay_fiat_callback_expired_order_status_id');
+        }
+
+        if (isset($this->request->post['payment_cointopay_fiat_callback_notenough_order_status_id'])) {
+            $data['cointopay_fiat_callback_notenough_order_status_id'] = $this->request->post['payment_cointopay_fiat_callback_notenough_order_status_id'];
+        } else {
+            $data['cointopay_fiat_callback_notenough_order_status_id'] = $this->config->get('payment_cointopay_fiat_callback_notenough_order_status_id');
+        }
+
+        if (isset($this->request->post['payment_cointopay_fiat_callback_cancel_order_status_id'])) {
+            $data['cointopay_fiat_callback_cancel_order_status_id'] = $this->request->post['payment_cointopay_fiat_callback_cancel_order_status_id'];
+        } else {
+            $data['cointopay_fiat_callback_cancel_order_status_id'] = $this->config->get('payment_cointopay_fiat_callback_cancel_order_status_id');
+        }
+
         if (isset($this->request->post['payment_cointopay_fiat_merchantID'])) {
             $data['cointopay_fiat_merchantID'] = $this->request->post['payment_cointopay_fiat_merchantID'];
         } else {
             $data['cointopay_fiat_merchantID'] = $this->config->get('payment_cointopay_fiat_merchantID');
 
             $data['crypto_coins'] = $this->getMerchantCoins($this->config->get('payment_cointopay_fiat_merchantID'));
-
         }
 
+        if (isset($this->request->post['payment_cointopay_fiat_sort_order'])) {
+            $data['cointopay_fiat_sort_order'] = $this->request->post['payment_cointopay_fiat_sort_order'];
+        } else {
+            $data['cointopay_fiat_sort_order'] = $this->config->get('payment_cointopay_fiat_sort_order');
+        }
 
         $this->load->model('localisation/order_status');
 
