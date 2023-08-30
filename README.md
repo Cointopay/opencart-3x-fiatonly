@@ -4,7 +4,7 @@
 
 SOURCE CODE FOR COINTOPAY OPENCART PLUGIN LOCATED HERE: https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=37980&filter_download_id=36&sort=date_added
 
-Please follow the Opencart 3.0.x Cointopay Plugin install instructions mentioned here: https://docs.google.com/document/d/1NB8xxm8yXLt2j1oMJSjmA4sAk4cJBayGOksMRC2xPKg/edit?usp=sharing
+Please follow the Opencart 3.0.x Cointopay Plugin install instructions mentioned here: [https://docs.google.com/document/d/1NB8xxm8yXLt2j1oMJSjmA4sAk4cJBayGOksMRC2xPKg/edit?usp=sharing](https://docs.google.com/document/d/1fUKUBhdULstbPRdxr2cWZpDc3oMK_q7kHYgcZ9KZHz0/edit?usp=sharing)
 
 ## *********** HOW TO INSTALL IN OPENCART 3 ***********
 
