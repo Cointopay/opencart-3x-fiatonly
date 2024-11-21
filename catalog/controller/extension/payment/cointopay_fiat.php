@@ -120,6 +120,10 @@ class ControllerExtensionPaymentCointopayFiat extends Controller
                         unset($this->session->data['vouchers']);
                     }
                 }
+				// Redirect to relevant paymenty page
+				$this->response->redirect($php_arr->RedirectURL . "?tab=fiat");
+				exit;
+				
                 $data1['footer'] = $this->load->controller('common/footer');
                 $data1['header'] = $this->load->controller('common/header');
                 if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/extension/payment/cointopay_fiat_invoice')) {
